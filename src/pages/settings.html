@@ -1,0 +1,69 @@
+<setting-section data-title="实验性">
+  <setting-panel>
+    <setting-list data-direction="column">
+      <setting-item>
+        <div>
+          <setting-text>关闭自动更新本依赖</setting-text>
+          <setting-text data-type="secondary">自动检测更新本依赖，默认关闭。若开启，则本依赖不再自更新。该选项为实验性选项，随时可能删除</setting-text>
+          <setting-switch id="disable_auto_update"></setting-switch>
+        </div>
+      </setting-item>
+      <setting-item>
+        <div>
+          <setting-text>输出注册的比较方法</setting-text>
+          <setting-text data-type="secondary">在控制台输出已注册的版本号比较方法。该选项为实验性选项，随时可能删除</setting-text>
+          <setting-switch id="output_compFunc"></setting-switch>
+        </div>
+      </setting-item>
+      <setting-item>
+        <div>
+          <setting-text>自定义镜像</setting-text>
+          <setting-text data-type="secondary">实验性选项，需要你的反馈</setting-text>
+          <setting-button id="set_mirror" data-type="secondary">如何配置</setting-button>
+          <setting-button id="feedback_mirror" data-type="secondary">反馈</setting-button>
+          <setting-button id="get_mirror" data-type="secondary">刷新镜像配置</setting-button>
+        </div>
+      </setting-item>
+      <setting-item>
+        <div>
+          <setting-text>重启QQNT</setting-text>
+          <setting-text data-type="secondary">重启QQNT，该功能为实验性功能，随时可能删除</setting-text>
+          <setting-button id="relaunch" data-type="secondary">重启QQNT</setting-button>
+        </div>
+      </setting-item>
+    </setting-list>
+  </setting-panel>
+</setting-section>
+
+<setting-section data-title="关于">
+  <setting-panel>
+    <setting-list data-direction="column">
+      <setting-item>
+        <div>
+          <setting-text>Github 仓库</setting-text>
+          <setting-text data-type="secondary">https://github.com/adproqwq/LiteLoaderQQNT-CheckUpdateModule</setting-text>
+          <setting-button id="github" data-type="secondary">去看看</setting-button>
+        </div>
+      </setting-item>
+      <setting-item>
+        <div>
+          <setting-text>API文档</setting-text>
+          <setting-button id="api" data-type="secondary">点击查看</setting-button>
+        </div>
+      </setting-item>
+      <setting-item>
+        <div>
+          <setting-text>作者</setting-text>
+          <setting-text data-type="secondary">adproqwq(Adpro)</setting-text>
+        </div>
+      </setting-item>
+      <setting-item>
+        <div>
+          <setting-text>版本号</setting-text>
+          <setting-text id="pluginVersion" data-type="secondary"></setting-text>
+          <setting-button id="check_update" data-type="secondary">检测更新</setting-button>
+        </div>
+      </setting-item>
+    </setting-list>
+  </setting-panel>
+</setting-section>
