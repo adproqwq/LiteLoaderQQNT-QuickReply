@@ -1,0 +1,28 @@
+{
+  "name": "lltemplate-vite-pnpm",
+  "version": "1.0.0",
+  "description": "A plugin template for LiteLoaderQQNT, powered by Vite & Typescript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npx eslint --fix src/**/* --ext .js,.ts",
+    "build": "npx electron-vite build"
+  },
+  "author": "Adpro",
+  "license": "GPL-3.0-only",
+  "devDependencies": {
+    "@electron-toolkit/eslint-config-ts": "^2.0.0",
+    "@electron-toolkit/tsconfig": "^1.0.1",
+    "@types/eslint__eslintrc": "^2.1.1",
+    "@types/eslint__js": "^8.42.3",
+    "@typescript-eslint/eslint-plugin": "8.0.0-alpha.40",
+    "@typescript-eslint/parser": "8.0.0-alpha.40",
+    "electron": "^31.1.0",
+    "electron-vite": "^2.3.0",
+    "eslint": "^9.6.0",
+    "unplugin-zip-pack": "^1.0.1",
+    "vite-plugin-checker": "^0.7.0",
+    "vite-plugin-cp": "^4.0.8"
+  },
+  "packageManager": "pnpm@9.4.0"
+}
