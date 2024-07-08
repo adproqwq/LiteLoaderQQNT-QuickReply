@@ -2,6 +2,7 @@ import { IConfig, ISettingConfig, config } from '../config/config';
 import observeElement from '../utils/observeElement';
 import getUin from '../utils/getUin';
 import { QQNTEditorElement } from '../types/QQNTEditorElement';
+import { log } from '../utils/log';
 
 const pluginSlug = 'QuickReply';
 
@@ -23,11 +24,13 @@ const getUserConfig = async (): Promise<[IConfig, ISettingConfig, number]> => {
   }
   else currentConfig = userConfig.data[currentConfigIndex];
 
+  log('获取当前账号配置完成');
   return [userConfig, currentConfig, currentConfigIndex];
 };
 
 const barIconClick = async () => {
   let [_, currentConfig, __] = await getUserConfig();
+  // From LLAPI
   const editorInsert = (text: string) => {
     const ckeditorInstance = (document.querySelector('.ck.ck-content.ck-editor__editable')! as QQNTEditorElement).ckeditorInstance;
     const editorModel = ckeditorInstance.model; // 获取编辑器的 model
@@ -36,6 +39,7 @@ const barIconClick = async () => {
     editorModel.change((writer) => {
       const emojiElement = text;
       writer.insert(emojiElement, position);
+      log('插入输入框完成');
     });
   };
 
@@ -53,6 +57,7 @@ const barIconClick = async () => {
       replyList.appendChild(btn);
     });
     document.getElementsByClassName('quickReply-bar')[0].appendChild(replyList);
+    log('创建快捷回复语列表完成');
   }
   else document.getElementsByClassName('quickReply-bar')[0].removeChild(document.getElementsByClassName('quickReply-reply-list')[0]);
 };
@@ -66,6 +71,7 @@ const onMessageLoad = async () => {
   style.rel = 'stylesheet';
   style.href = `local:///${LiteLoader.plugins[pluginSlug].path.plugin}/style/replyList.css`;
   document.head.appendChild(style);
+  log('获取样式文件完成');
   
   const iconSvg = await (await fetch(`local:///${LiteLoader.plugins[pluginSlug].path.plugin}/assets/barIcon.svg`)).text();
   const qTooltips = document.createElement('div');
@@ -88,6 +94,7 @@ const onMessageLoad = async () => {
   icon.innerHTML = iconSvg;
 
   document.querySelector('.chat-func-bar')!.lastElementChild!.appendChild(barIcon);
+  log('创建工具栏图标完成');
 };
 
 export const onSettingWindowCreated = async (view: HTMLElement) => {

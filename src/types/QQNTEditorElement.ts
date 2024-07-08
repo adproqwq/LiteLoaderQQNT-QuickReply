@@ -12,7 +12,7 @@ interface CkeditorInstanceModel {
   document: {
     selection: CkeditorInstanceModelDocumentSelection;
   };
-  change: (callback: (any) => void) => void;
+  change: (callback: (...args) => void) => void;
 };
 
 interface CkeditorInstanceModelDocumentSelection {
