@@ -59,6 +59,7 @@ export default defineConfig({
           { src: './assets', dest: 'dist/assets' },
           { src: './changeLog.md', dest: 'dist' },
           { src: './src/style', dest: 'dist/style' },
+          { src: './src/pages', dest: 'dist/pages' },
         ],
       }),
       viteZipPack({

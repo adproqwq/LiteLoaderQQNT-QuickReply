@@ -39,32 +39,35 @@ const barIconClick = async () => {
     });
   };
 
-  const replyList = document.createElement('div');
-  replyList.classList.add('quickReply-reply-list');
-  currentConfig.messages.forEach((msg) => {
-    const btn = document.createElement('button');
-    btn.classList.add('quickReply-reply-list-button');
-    btn.innerText = msg;
-    btn.onclick = (e) => {
-      editorInsert((e.target! as HTMLButtonElement).innerText);
-      document.getElementsByClassName('quickReply-bar')[0].removeChild(replyList);
-    };
-    replyList.appendChild(btn);
-  });
-  document.getElementsByClassName('quickReply-bar')[0].appendChild(replyList);
+  if(document.getElementsByClassName('quickReply-reply-list').length == 0){
+    const replyList = document.createElement('div');
+    replyList.classList.add('quickReply-reply-list');
+    currentConfig.messages.forEach((msg) => {
+      const btn = document.createElement('button');
+      btn.classList.add('quickReply-reply-list-button');
+      btn.innerText = msg;
+      btn.onclick = (e) => {
+        editorInsert((e.target! as HTMLButtonElement).innerText);
+        document.getElementsByClassName('quickReply-bar')[0].removeChild(replyList);
+      };
+      replyList.appendChild(btn);
+    });
+    document.getElementsByClassName('quickReply-bar')[0].appendChild(replyList);
+  }
+  else document.getElementsByClassName('quickReply-bar')[0].removeChild(document.getElementsByClassName('quickReply-reply-list')[0]);
 };
 
 observeElement('.chat-func-bar', () => {
   if(document.getElementsByClassName('quickReply-bar').length == 0) onMessageLoad();
 }, true);
 
-const onMessageLoad = () => {
+const onMessageLoad = async () => {
   const style = document.createElement('link');
   style.rel = 'stylesheet';
   style.href = `local:///${LiteLoader.plugins[pluginSlug].path.plugin}/style/replyList.css`;
   document.head.appendChild(style);
   
-  const iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="m5.921 11.5l3.746 3.746q.147.146.153.344q.007.199-.158.364q-.166.16-.354.162q-.189.003-.354-.162l-4.389-4.389q-.242-.242-.242-.565t.243-.565l4.388-4.389q.14-.14.341-.15t.366.15q.166.165.166.357t-.165.357l-3.74 3.74H15.5q1.864 0 3.182 1.318T20 15v2.5q0 .214-.143.357T19.5 18t-.357-.143T19 17.5V15q0-1.442-1.029-2.471T15.5 11.5z"/></svg>';
+  const iconSvg = await (await fetch(`local:///${LiteLoader.plugins[pluginSlug].path.plugin}/assets/barIcon.svg`)).text();
   const qTooltips = document.createElement('div');
   const qTooltipsContent = document.createElement('div');
   const icon = document.createElement('i');
@@ -85,4 +88,28 @@ const onMessageLoad = () => {
   icon.innerHTML = iconSvg;
 
   document.querySelector('.chat-func-bar')!.lastElementChild!.appendChild(barIcon);
+};
+
+export const onSettingWindowCreated = async (view: HTMLElement) => {
+  let [userConfig, currentConfig, currentConfigIndex] = await getUserConfig();
+  view.innerHTML = await (await fetch(`local:///${LiteLoader.plugins[pluginSlug].path.plugin}/pages/settings.html`)).text();
+
+  (view.querySelector('#pluginVersion') as HTMLParagraphElement).innerHTML = LiteLoader.plugins[pluginSlug].manifest.version;
+  (view.querySelector('#setReplies') as HTMLTextAreaElement).value = currentConfig.messages.join('\r\n');
+
+  (view.querySelector('#setReplies') as HTMLTextAreaElement).addEventListener('change', async () => {
+    // 换行分割
+    let replies = (view.querySelector('#setReplies') as HTMLTextAreaElement).value.split(/[(\r\n)\r\n]+/);
+    // 忽略空项
+    replies.forEach((reply, index) => {
+      if(!reply) replies.splice(index, 1);
+    });
+    currentConfig.messages = replies;
+    userConfig.data[currentConfigIndex] = currentConfig;
+    await LiteLoader.api.config.set(pluginSlug, userConfig);
+  });
+
+  (view.querySelector('#github') as HTMLButtonElement).addEventListener('click', () => {
+    LiteLoader.api.openExternal('https://github.com/adproqwq/LiteLoaderQQNT-QuickReply');
+  });
 };

@@ -2,6 +2,8 @@
 
 本插件依赖：`插件检测更新API`插件，请先安装这个插件！
 
+请勿直接使用源码，需要下载Release包使用！
+
 ## 鸣谢
 * [LiteLoaderQQNT](https://github.com/LiteLoaderQQNT/LiteLoaderQQNT/)
 * [LiteLoaderQQNT-Euphony](https://github.com/xtaw/LiteLoaderQQNT-Euphony)
