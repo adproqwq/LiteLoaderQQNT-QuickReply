@@ -97,6 +97,22 @@ const onMessageLoad = async () => {
   log('创建工具栏图标完成');
 };
 
+document.onkeydown = async (e) => {
+  log('快捷键监听');
+  const key = e.key;
+  // 监听快捷键
+  // 大小写需要同时监听
+  if((key == 'a' || key == 'A') && e.altKey){
+    const selected = window.getSelection()?.toString();
+    if(selected){
+      let [userConfig, currentConfig, currentConfigIndex] = await getUserConfig();
+      currentConfig.messages.push(selected);
+      userConfig.data[currentConfigIndex] = currentConfig;
+      await LiteLoader.api.config.set(pluginSlug, userConfig);
+    }
+  }
+};
+
 export const onSettingWindowCreated = async (view: HTMLElement) => {
   let [userConfig, currentConfig, currentConfigIndex] = await getUserConfig();
   view.innerHTML = await (await fetch(`local:///${LiteLoader.plugins[pluginSlug].path.plugin}/pages/settings.html`)).text();

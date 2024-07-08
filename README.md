@@ -4,10 +4,27 @@
 
 请勿直接使用源码，需要下载Release包使用！
 
+## 如何使用
+
+### 回复
+
+插件正确加载后，会在聊天框上方工具栏右侧添加按钮。点击按钮即可选择回复语。
+
+### 更改
+
+更改回复语可以在插件设置页进行，设置页的文本框中会出现你目前的所有回复语。你可以新增、修改或删除。
+
+每条回复语用换行分割，不用担心太长会被分割开。文本框失焦后会自动保存，请确保让文本框失焦后再关闭设置。
+
+新增回复语的话，本插件提供了`Alt+A`的快捷键。只要选中文字，再按下`Alt+A`，即可添加回复语。
+
+理论上，除了在频道里，只要是能选中的文字，都可以通过这个方式添加。
+
 ## 鸣谢
 * [LiteLoaderQQNT](https://github.com/LiteLoaderQQNT/LiteLoaderQQNT/)
 * [LiteLoaderQQNT-Euphony](https://github.com/xtaw/LiteLoaderQQNT-Euphony)
 * [LiteLoaderQQNT-DeepL](https://github.com/MUKAPP/LiteLoaderQQNT-DeepL)
+* [LiteLoaderQQNT-lite_tools](https://github.com/xiyuesaves/LiteLoaderQQNT-lite_tools)
 
 ## License
 ```
