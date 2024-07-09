@@ -64,10 +64,6 @@ const barIconClick = async () => {
   else document.getElementsByClassName('quickReply-bar')[0].removeChild(document.getElementsByClassName('quickReply-reply-list')[0]);
 };
 
-observeElement('.chat-func-bar', () => {
-  if(document.getElementsByClassName('quickReply-bar').length == 0) onMessageLoad();
-}, true);
-
 const onMessageLoad = async () => {
   const iconSvg = await (await fetch(`local:///${LiteLoader.plugins[pluginSlug].path.plugin}/assets/barIcon.svg`)).text();
   const qTooltips = document.createElement('div');
@@ -92,6 +88,12 @@ const onMessageLoad = async () => {
   document.querySelector('.chat-func-bar')!.lastElementChild!.appendChild(barIcon);
   log('创建工具栏图标完成');
 };
+
+const style = document.createElement('link');
+style.rel = 'stylesheet';
+style.href = `local:///${LiteLoader.plugins[pluginSlug].path.plugin}/style/global.css`;
+document.head.appendChild(style);
+log('获取样式文件完成');
 
 document.onkeydown = async (e) => {
   const key = e.key;
@@ -122,11 +124,9 @@ document.onkeyup = async (e) => {
   }
 };
 
-const style = document.createElement('link');
-style.rel = 'stylesheet';
-style.href = `local:///${LiteLoader.plugins[pluginSlug].path.plugin}/style/global.css`;
-document.head.appendChild(style);
-log('获取样式文件完成');
+observeElement('.chat-func-bar', () => {
+  if(document.getElementsByClassName('quickReply-bar').length == 0) onMessageLoad();
+}, true);
 
 export const onSettingWindowCreated = async (view: HTMLElement) => {
   let [userConfig, currentConfig, currentConfigIndex] = await getUserConfig();
