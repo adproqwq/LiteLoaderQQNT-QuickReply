@@ -7,7 +7,7 @@ import { log } from '../utils/log';
 const pluginSlug = 'QuickReply';
 
 const getUserConfig = async (): Promise<[IConfig, ISettingConfig, number]> => {
-  let userConfig: IConfig = await LiteLoader.api.config.get(pluginSlug, config);
+  let userConfig = await LiteLoader.api.config.get(pluginSlug, config);
   let currentConfigIndex = -1;
   const uin = getUin();
   userConfig.data.forEach((c, i) => {
@@ -124,7 +124,7 @@ document.onkeyup = async (e) => {
 
 const style = document.createElement('link');
 style.rel = 'stylesheet';
-style.href = `local:///${LiteLoader.plugins[pluginSlug].path.plugin}/style/replyList.css`;
+style.href = `local:///${LiteLoader.plugins[pluginSlug].path.plugin}/style/global.css`;
 document.head.appendChild(style);
 log('获取样式文件完成');
 

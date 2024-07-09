@@ -97,3 +97,9 @@
 .quickReply-reply-list-button:hover::before {
   background-color: aliceblue;
 }
+
+.quickReply-setReplies {
+  background-color: #f2f2f2;
+  resize: none;
+  border-radius: 10px;
+}
