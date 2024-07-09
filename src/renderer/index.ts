@@ -28,20 +28,22 @@ const getUserConfig = async (): Promise<[IConfig, ISettingConfig, number]> => {
   return [userConfig, currentConfig, currentConfigIndex];
 };
 
+// From LLAPI
+const editorInsert = (text: string) => {
+  const ckeditor = document.querySelector('.ck.ck-content.ck-editor__editable')! as QQNTEditorElement;
+  const ckeditorInstance = ckeditor.ckeditorInstance;
+  const editorModel = ckeditorInstance.model; // 获取编辑器的 model
+  const editorSelection = editorModel.document.selection; // 获取光标的当前选择
+  const position = editorSelection.getFirstPosition(); // 获取当前光标的位置
+  editorModel.change((writer) => {
+    const emojiElement = text;
+    writer.insert(emojiElement, position);
+    log('插入输入框完成');
+  });
+};
+
 const barIconClick = async () => {
   let [_, currentConfig, __] = await getUserConfig();
-  // From LLAPI
-  const editorInsert = (text: string) => {
-    const ckeditorInstance = (document.querySelector('.ck.ck-content.ck-editor__editable')! as QQNTEditorElement).ckeditorInstance;
-    const editorModel = ckeditorInstance.model; // 获取编辑器的 model
-    const editorSelection = editorModel.document.selection; // 获取光标的当前选择
-    const position = editorSelection.getFirstPosition(); // 获取当前光标的位置
-    editorModel.change((writer) => {
-      const emojiElement = text;
-      writer.insert(emojiElement, position);
-      log('插入输入框完成');
-    });
-  };
 
   if(document.getElementsByClassName('quickReply-reply-list').length == 0){
     const replyList = document.createElement('div');
@@ -67,12 +69,6 @@ observeElement('.chat-func-bar', () => {
 }, true);
 
 const onMessageLoad = async () => {
-  const style = document.createElement('link');
-  style.rel = 'stylesheet';
-  style.href = `local:///${LiteLoader.plugins[pluginSlug].path.plugin}/style/replyList.css`;
-  document.head.appendChild(style);
-  log('获取样式文件完成');
-  
   const iconSvg = await (await fetch(`local:///${LiteLoader.plugins[pluginSlug].path.plugin}/assets/barIcon.svg`)).text();
   const qTooltips = document.createElement('div');
   const qTooltipsContent = document.createElement('div');
@@ -98,9 +94,9 @@ const onMessageLoad = async () => {
 };
 
 document.onkeydown = async (e) => {
-  log('快捷键监听');
   const key = e.key;
   // 监听快捷键
+  // 添加回复语
   // 大小写需要同时监听
   if((key == 'a' || key == 'A') && e.altKey){
     const selected = window.getSelection()?.toString();
@@ -112,6 +108,25 @@ document.onkeydown = async (e) => {
     }
   }
 };
+
+// 顶排数字键无keydown事件
+document.onkeyup = async (e) => {
+  // 快捷插入前9个回复语
+  const key = e.key;
+  if(LiteLoader.os.platform == 'darwin' ? e.metaKey : e.ctrlKey && !isNaN(Number(key))){
+    let keyNumber: number = Number(key);
+    if(keyNumber > 0 && keyNumber <= 9){
+      let [_, currentConfig, __] = await getUserConfig();
+      if(keyNumber <= currentConfig.messages.length) editorInsert(currentConfig.messages[keyNumber - 1]);
+    }
+  }
+};
+
+const style = document.createElement('link');
+style.rel = 'stylesheet';
+style.href = `local:///${LiteLoader.plugins[pluginSlug].path.plugin}/style/replyList.css`;
+document.head.appendChild(style);
+log('获取样式文件完成');
 
 export const onSettingWindowCreated = async (view: HTMLElement) => {
   let [userConfig, currentConfig, currentConfigIndex] = await getUserConfig();

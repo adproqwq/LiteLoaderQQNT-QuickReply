@@ -1,6 +1,6 @@
 {
   "name": "llqqnt-quick-reply",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "添加快捷回复语，重复打字滚！",
   "main": "index.js",
   "scripts": {
