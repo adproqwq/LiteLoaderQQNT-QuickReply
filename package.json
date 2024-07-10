@@ -17,12 +17,12 @@
     "@types/eslint__js": "^8.42.3",
     "@typescript-eslint/eslint-plugin": "8.0.0-alpha.40",
     "@typescript-eslint/parser": "8.0.0-alpha.40",
-    "electron": "^31.1.0",
+    "electron": "^31.2.0",
     "electron-vite": "^2.3.0",
     "eslint": "^9.6.0",
     "unplugin-zip-pack": "^1.0.1",
     "vite": "^5.3.3",
-    "vite-plugin-checker": "^0.7.0",
+    "vite-plugin-checker": "^0.7.1",
     "vite-plugin-cp": "^4.0.8"
   },
   "packageManager": "pnpm@9.4.0"

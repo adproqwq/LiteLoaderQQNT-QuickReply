@@ -128,7 +128,7 @@ declare namespace LiteLoader {
 
   interface ILiteLoaderAPIConfig {
     set: <IConfig = unknown>(slug: string, new_config: IConfig) => unknown,
-    get: <IConfig = unknown>(slug: string, default_config?: IConfig) => IConfig,
+    get: <IConfig = unknown>(slug: string, default_config?: IConfig) => IConfig | Promise<IConfig>,
   }
 }
 
