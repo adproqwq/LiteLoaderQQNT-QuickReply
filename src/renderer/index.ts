@@ -1,49 +1,12 @@
-import { IConfig, ISettingConfig, config } from '../config/config';
 import observeElement from '../utils/observeElement';
-import getUin from '../utils/getUin';
-import { QQNTEditorElement } from '../types/QQNTEditorElement';
 import { log } from '../utils/log';
+import getCurrentUserConfig from '../utils/getCurrentUserConfig';
+import insertEditor from '../utils/insertEditor';
 
 const pluginSlug = 'QuickReply';
 
-const getUserConfig = async (): Promise<[IConfig, ISettingConfig, number]> => {
-  let userConfig = await LiteLoader.api.config.get(pluginSlug, config);
-  let currentConfigIndex = -1;
-  const uin = getUin();
-  userConfig.data.forEach((c, i) => {
-    if(c.uin == uin) currentConfigIndex = i;
-  });
-  let currentConfig: ISettingConfig;
-  if(currentConfigIndex == -1){
-    let newUserConfig = config.data[0];
-    newUserConfig.uin = uin;
-    userConfig.data.push(newUserConfig);
-    await LiteLoader.api.config.set(pluginSlug, userConfig);
-    currentConfig = newUserConfig;
-    currentConfigIndex = userConfig.data.length - 1;
-  }
-  else currentConfig = userConfig.data[currentConfigIndex];
-
-  log('获取当前账号配置完成');
-  return [userConfig, currentConfig, currentConfigIndex];
-};
-
-// From LLAPI
-const editorInsert = (text: string) => {
-  const ckeditor = document.querySelector('.ck.ck-content.ck-editor__editable')! as QQNTEditorElement;
-  const ckeditorInstance = ckeditor.ckeditorInstance;
-  const editorModel = ckeditorInstance.model; // 获取编辑器的 model
-  const editorSelection = editorModel.document.selection; // 获取光标的当前选择
-  const position = editorSelection.getFirstPosition(); // 获取当前光标的位置
-  editorModel.change((writer) => {
-    const emojiElement = text;
-    writer.insert(emojiElement, position);
-    log('插入输入框完成');
-  });
-};
-
 const barIconClick = async () => {
-  let [_, currentConfig, __] = await getUserConfig();
+  let [_, currentConfig, __] = await getCurrentUserConfig();
 
   if(document.getElementsByClassName('quickReply-reply-list').length == 0){
     const replyList = document.createElement('div');
@@ -53,7 +16,7 @@ const barIconClick = async () => {
       btn.classList.add('quickReply-reply-list-button');
       btn.innerText = msg;
       btn.onclick = (e) => {
-        editorInsert((e.target! as HTMLButtonElement).innerText);
+        insertEditor((e.target! as HTMLButtonElement).innerText);
         document.getElementsByClassName('quickReply-bar')[0].removeChild(replyList);
       };
       replyList.appendChild(btn);
@@ -103,7 +66,7 @@ document.onkeydown = async (e) => {
   if((key == 'a' || key == 'A') && e.altKey){
     const selected = window.getSelection()?.toString();
     if(selected){
-      let [userConfig, currentConfig, currentConfigIndex] = await getUserConfig();
+      let [userConfig, currentConfig, currentConfigIndex] = await getCurrentUserConfig();
       currentConfig.messages.push(selected);
       userConfig.data[currentConfigIndex] = currentConfig;
       await LiteLoader.api.config.set(pluginSlug, userConfig);
@@ -118,8 +81,8 @@ document.onkeyup = async (e) => {
   if(LiteLoader.os.platform == 'darwin' ? e.metaKey : e.ctrlKey && !isNaN(Number(key))){
     let keyNumber: number = Number(key);
     if(keyNumber > 0 && keyNumber <= 9){
-      let [_, currentConfig, __] = await getUserConfig();
-      if(keyNumber <= currentConfig.messages.length) editorInsert(currentConfig.messages[keyNumber - 1]);
+      let [_, currentConfig, __] = await getCurrentUserConfig();
+      if(keyNumber <= currentConfig.messages.length) insertEditor(currentConfig.messages[keyNumber - 1]);
     }
   }
 };
@@ -129,7 +92,7 @@ observeElement('.chat-func-bar', () => {
 }, true);
 
 export const onSettingWindowCreated = async (view: HTMLElement) => {
-  let [userConfig, currentConfig, currentConfigIndex] = await getUserConfig();
+  let [userConfig, currentConfig, currentConfigIndex] = await getCurrentUserConfig();
   view.innerHTML = await (await fetch(`local:///${LiteLoader.plugins[pluginSlug].path.plugin}/pages/settings.html`)).text();
 
   (view.querySelector('#pluginVersion') as HTMLParagraphElement).innerHTML = LiteLoader.plugins[pluginSlug].manifest.version;
