@@ -56,7 +56,7 @@ const style = document.createElement('link');
 style.rel = 'stylesheet';
 style.href = `local:///${LiteLoader.plugins[pluginSlug].path.plugin}/style/global.css`;
 document.head.appendChild(style);
-log('获取样式文件完成');
+log('加载样式文件完成');
 
 document.onkeydown = async (e) => {
   const key = e.key;
@@ -74,7 +74,9 @@ document.onkeydown = async (e) => {
   }
 };
 
-// 顶排数字键无keydown事件
+// 顶排数字键keydown事件，ctrlKey为false
+// 会导致QQ版本为 9.9.12-25765 的输入框功能键失效，暂时删除
+/*
 document.onkeyup = async (e) => {
   // 快捷插入前9个回复语
   const key = e.key;
@@ -86,6 +88,7 @@ document.onkeyup = async (e) => {
     }
   }
 };
+*/
 
 observeElement('.chat-func-bar', () => {
   if(document.getElementsByClassName('quickReply-bar').length == 0) onMessageLoad();

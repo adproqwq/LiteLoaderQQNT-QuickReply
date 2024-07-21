@@ -26,9 +26,11 @@
 
 #### 快捷插入
 
-Windows和Linux可以使用`Ctrl+数字键（键盘上方或小键盘都可以）`快捷插入回复语，比如`Ctrl+1`就是插入第1条回复语。
+在QQ 9.9.12-25765 中导致输入框功能键失灵，暂时弃用。
 
-Mac的键位有所不同，是`Command+数字键`。
+~~Windows和Linux可以使用`Ctrl+数字键（键盘上方或小键盘都可以）`快捷插入回复语，比如`Ctrl+1`就是插入第1条回复语。~~
+
+~~Mac的键位有所不同，是`Command+数字键`。~~
 
 ## 鸣谢
 * [LiteLoaderQQNT](https://github.com/LiteLoaderQQNT/LiteLoaderQQNT/)
