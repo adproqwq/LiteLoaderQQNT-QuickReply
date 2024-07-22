@@ -58,7 +58,13 @@ style.href = `local:///${LiteLoader.plugins[pluginSlug].path.plugin}/style/globa
 document.head.appendChild(style);
 log('加载样式文件完成');
 
-document.onkeydown = async (e) => {
+document.body.addEventListener('mousedown', (e) => {
+  if(!(e.target! as HTMLElement).closest('.quickReply-bar') && document.querySelector('.quickReply-bar')!.querySelector('.quickReply-reply-list')){
+    document.querySelector('.quickReply-bar')!.removeChild(document.querySelector('.quickReply-reply-list')!);
+  }
+});
+
+document.body.addEventListener('keydown', async (e) => {
   const key = e.key;
   // 监听快捷键
   // 添加回复语
@@ -72,23 +78,12 @@ document.onkeydown = async (e) => {
       await LiteLoader.api.config.set(pluginSlug, userConfig);
     }
   }
-};
-
-// 顶排数字键keydown事件，ctrlKey为false
-// 会导致QQ版本为 9.9.12-25765 的输入框功能键失效，暂时删除
-/*
-document.onkeyup = async (e) => {
-  // 快捷插入前9个回复语
-  const key = e.key;
-  if(LiteLoader.os.platform == 'darwin' ? e.metaKey : e.ctrlKey && !isNaN(Number(key))){
-    let keyNumber: number = Number(key);
-    if(keyNumber > 0 && keyNumber <= 9){
-      let [_, currentConfig, __] = await getCurrentUserConfig();
-      if(keyNumber <= currentConfig.messages.length) insertEditor(currentConfig.messages[keyNumber - 1]);
-    }
+  else if(key.startsWith('F') && key.length > 1){
+    const index = Number(key.substring(1));
+    let [_, currentConfig, __] = await getCurrentUserConfig();
+    if(index <= currentConfig.messages.length) insertEditor(currentConfig.messages[index - 1]);
   }
-};
-*/
+});
 
 observeElement('.chat-func-bar', () => {
   if(document.getElementsByClassName('quickReply-bar').length == 0) onMessageLoad();
