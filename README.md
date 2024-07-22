@@ -28,7 +28,7 @@
 
 Windows、Linux、MacOS可以使用`F1-F12`快捷插入回复语，比如`F1`就是插入第1条回复语。
 
-请注意：如果使用了`Chii DevTools`、`JustF5`等使用这些键位的插件时，冲突键位的功能将由插件加载的顺序决定。
+请注意：可以放心使用`Chii DevTools`、`JustF5`等使用这些键位的插件，冲突键位的功能将会同时触发。
 
 ## 鸣谢
 * [LiteLoaderQQNT](https://github.com/LiteLoaderQQNT/LiteLoaderQQNT/)
