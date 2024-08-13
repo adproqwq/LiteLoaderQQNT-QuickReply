@@ -64,7 +64,7 @@
   transform-origin: right bottom;
   pointer-events: none;
   overflow-x: hidden;
-  overflow-y: hidden;
+  overflow-y: scroll;
   padding-bottom: 36px;
   z-index: 1000;
 }

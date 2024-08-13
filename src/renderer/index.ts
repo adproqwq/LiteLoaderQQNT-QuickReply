@@ -2,6 +2,7 @@ import observeElement from '../utils/observeElement';
 import { log } from '../utils/log';
 import getCurrentUserConfig from '../utils/getCurrentUserConfig';
 import insertEditor from '../utils/insertEditor';
+import parseReplies from '../utils/parseReplies';
 
 const pluginSlug = 'QuickReply';
 
@@ -85,8 +86,8 @@ document.body.addEventListener('keydown', async (e) => {
   }
 });
 
-observeElement('.chat-func-bar', () => {
-  if(document.getElementsByClassName('quickReply-bar').length == 0) onMessageLoad();
+observeElement('.chat-func-bar', async () => {
+  if(document.getElementsByClassName('quickReply-bar').length == 0) await onMessageLoad();
 }, true);
 
 export const onSettingWindowCreated = async (view: HTMLElement) => {
@@ -94,18 +95,13 @@ export const onSettingWindowCreated = async (view: HTMLElement) => {
   view.innerHTML = await (await fetch(`local:///${LiteLoader.plugins[pluginSlug].path.plugin}/pages/settings.html`)).text();
 
   (view.querySelector('#pluginVersion') as HTMLParagraphElement).innerHTML = LiteLoader.plugins[pluginSlug].manifest.version;
-  (view.querySelector('#setReplies') as HTMLTextAreaElement).value = currentConfig.messages.join('\r\n');
+
+  currentConfig.messages.forEach((message) => {
+    (view.querySelector('#setReplies') as HTMLTextAreaElement).value += `[[${message}]]\n`;
+  });
 
   (view.querySelector('#setReplies') as HTMLTextAreaElement).addEventListener('change', async () => {
-    // 换行分割
-    let replies = (view.querySelector('#setReplies') as HTMLTextAreaElement).value.split(/[(\r\n)\r\n]+/);
-    // 忽略空项
-    replies.forEach((reply, index) => {
-      if(!reply) replies.splice(index, 1);
-    });
-    currentConfig.messages = replies;
-    userConfig.data[currentConfigIndex] = currentConfig;
-    await LiteLoader.api.config.set(pluginSlug, userConfig);
+    await parseReplies((view.querySelector('#setReplies') as HTMLTextAreaElement).value, userConfig, currentConfig, currentConfigIndex);
   });
 
   (view.querySelector('#github') as HTMLButtonElement).addEventListener('click', () => {
