@@ -91,7 +91,7 @@ observeElement('.chat-func-bar', async () => {
 }, true);
 
 export const onSettingWindowCreated = async (view: HTMLElement) => {
-  let [userConfig, currentConfig, currentConfigIndex] = await getCurrentUserConfig();
+  let [_, currentConfig, __] = await getCurrentUserConfig();
   view.innerHTML = await (await fetch(`local:///${LiteLoader.plugins[pluginSlug].path.plugin}/pages/settings.html`)).text();
 
   (view.querySelector('#pluginVersion') as HTMLParagraphElement).innerHTML = LiteLoader.plugins[pluginSlug].manifest.version;
@@ -101,6 +101,7 @@ export const onSettingWindowCreated = async (view: HTMLElement) => {
   });
 
   (view.querySelector('#setReplies') as HTMLTextAreaElement).addEventListener('change', async () => {
+    const [userConfig, currentConfig, currentConfigIndex] = await getCurrentUserConfig();
     await parseReplies((view.querySelector('#setReplies') as HTMLTextAreaElement).value, userConfig, currentConfig, currentConfigIndex);
   });
 
