@@ -5,7 +5,7 @@
   "name": "快捷回复",
   "slug": "QuickReply",
   "description": "添加快捷回复语，重复打字滚！",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "authors": [
     {
       "name": "Adpro",
@@ -30,7 +30,7 @@
     "repo": "adproqwq/LiteLoaderQQNT-QuickReply",
     "branch": "main",
     "release": {
-      "tag": "v1.1.0",
+      "tag": "v1.1.1",
       "file": "QuickReply.zip"
     }
   }
